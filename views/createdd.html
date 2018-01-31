@@ -1,22 +1,41 @@
-<link rel="stylesheet" href="style.css">
+
 <p>Data Dictionary Page</p>
 <!-- Note for future self: Create entirety of HTML page before
     beginning javascript, that way it will be easier-->
 
-<table>
+<table id="datadictionary">
   <tr>
-    <th>Header 1</th>
-    <th>Header 2</th>
-    <th>Header 3</th>
-    <th>Header 4</th>
-    <th>Header 5</th>
+    <th colspan=2>Table Name <input type=text></th>
   </tr>
   <tr>
-    <td>1</td>
-    <td>2</td>
-    <td>3</td>
-    <td>4</td>
-    <td>5</td>
+    <th>Attribute Name</th>
+    <th>Key</th>
+    <th>Data Type</th>
+    <th>Data Size</th>
+    <th>Domain and Constraints</th>
+    <th>FK Reference</th>
+    <th>Data Description</th>
+    <th>Self-Explanatory?</th>
+  </tr>
+  <tr>
+    <td><input type=text></td>
+    <td>
+      <select>
+        <option>Primary Key</option>
+        <option>Foreign Key</option>
+        <option>Candidate Key</option>
+    </td>
+    <td>
+      <select>
+        <option>Int</option>
+        <option>VARCHAR</option>
+        <option>Grab list from MySQL</option>
+    </td>
+    <td><input type=text></td>
+    <td><input type=text></td>
+    <td><input type=text></td>
+    <td><input type=text></td>
+    <td></td>
 </table>
 
 <button id="addrow">Add Row</button>

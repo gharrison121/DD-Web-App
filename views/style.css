@@ -1,3 +1,44 @@
-table, th, td {
+.layout {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.layout-content {
+  display: flex;
+  flex: 1;
+}
+
+#content {
+  flex: 1;
+}
+
+.layout-nav {
+  /* 12em is the width of the columns */
+  flex: 0 0 12em;
+  order: -1;
+}
+
+@media (min-width: 768px) {
+  .layout-content {
+    flex-direction: row;
+    flex: 1;
+  }
+
+
+/* Data Dictionary Page */
+#datadictionary {
+  width: 100%;
+}
+
+#datadictionary, td, th{
     border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+}
+
+input {
+  width: 150px;
 }
