@@ -1,0 +1,19 @@
+{
+  "name": "artefact",
+  "version": "1.0.0",
+  "description": "RDBMS Data Dictionary Design web-application",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "GSH",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "path": "^0.12.7"
+  }
+}
