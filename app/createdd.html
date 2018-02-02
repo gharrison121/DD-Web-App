@@ -1,42 +1,47 @@
 
 <p>Data Dictionary Page</p>
+<button id="addtable">Add Table</button>
 <!-- Note for future self: Create entirety of HTML page before
     beginning javascript, that way it will be easier-->
 
 <table id="datadictionary">
-  <tr>
-    <th colspan=2>Table Name <input type=text></th>
-  </tr>
-  <tr>
-    <th>Attribute Name</th>
-    <th>Key</th>
-    <th>Data Type</th>
-    <th>Data Size</th>
-    <th>Domain and Constraints</th>
-    <th>FK Reference</th>
-    <th>Data Description</th>
-    <th>Self-Explanatory?</th>
-  </tr>
-  <tr>
-    <td><input type=text></td>
-    <td>
-      <select>
-        <option>Primary Key</option>
-        <option>Foreign Key</option>
-        <option>Candidate Key</option>
-    </td>
-    <td>
-      <select>
-        <option>Int</option>
-        <option>VARCHAR</option>
-        <option>Grab list from MySQL</option>
-    </td>
-    <td><input type=text></td>
-    <td><input type=text></td>
-    <td><input type=text></td>
-    <td><input type=text></td>
-    <td><input type=checkbox></input></td>
+  <tbody id="ddtable1">
+    <tr>
+      <th colspan=2>Table Name <input type=text></th>
+    </tr>
+    <tr>
+      <th>Attribute Name</th>
+      <th>Key</th>
+      <th>Data Type</th>
+      <th>Data Size</th>
+      <th>Domain and Constraints</th>
+      <th>FK Reference</th>
+      <th>Data Description</th>
+      <th>Self-Explanatory?</th>
+    </tr>
+    <tr>
+      <td><input type=text></td>
+      <td>
+        <select>
+          <option>Primary Key</option>
+          <option>Foreign Key</option>
+          <option>Candidate Key</option>
+      </td>
+      <td>
+        <select>
+          <option>Int</option>
+          <option>VARCHAR</option>
+          <option>Grab list from MySQL</option>
+      </td>
+      <td><input type=text></td>
+      <td><input type=text></td>
+      <td><input type=text></td>
+      <td><input type=text></td>
+      <td><input type=checkbox></input></td>
+      <tr><td><button id="addrow1" onclick="idHandler()">Add Row</button></td></tr>
+  </tbody>
+
 </table>
 
-<button id="addrow">Add Row</button>
+
 <script src="createdd.js"></script>
