@@ -62,5 +62,35 @@ function addRow(id) {
 }
 
 function addTable() {
+  console.log("addtable run")
+  var newTable = document.createElement("table"),
+      tbody = document.createElement("tbody"),
+      tableNameRow = document.createElement("tr")
+      tableName = document.createElement("th")
+      tableName.colSpan = 2
+      tableName.innerHTML = "Table Name "
+
+      tableNameInput = document.createElement("input")
+      tableNameInput.type = "text"
+
+      //Construct HTML element
+      tableNameRow.appendChild(tableName)
+      tableName.appendChild(tableNameInput)
+      tbody.appendChild(tableNameRow)
+
+      headersRow = document.createElement("tr")
+      headers = ['Attribute Name', 'Key', 'Data Type', 'Data Size',
+                'Domain and Constraints', 'FK Reference', 'Data Description',
+                'Self-Explanatory?']
+  //loop to number of cols in a table, create headers for each
+  for (var i = 0; i < 8; i++) {
+    var rowHeader = document.createElement("th")
+    rowHeader.innerHTML = headers[i]
+    headersRow.appendChild(rowHeader)
+  }
+
+  tbody.appendChild(headersRow)
+  newTable.appendChild(tbody)
+  document.body.appendChild(newTable)
 
 }
