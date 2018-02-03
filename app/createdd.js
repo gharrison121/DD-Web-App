@@ -8,13 +8,16 @@ console.log("Create DD Page")
 
 //Handles which add row button has been clicked
 function idHandler() {
-  addRow(event.srcElement.id)
+  //Commented out ID user, now just uses element
+  console.log(event.srcElement)
+  addRow(event.srcElement)
 }
 
 function addRow(id) {
   console.log("addrow function")
-  var rowBtn = document.getElementById(id)
-  currentTable = rowBtn.closest("tbody")
+  //Commented out ID user, now just uses element
+  // var rowBtn = document.getElementById(id)
+  currentTable = id.closest("tbody")
   var newRow = document.createElement("tr")
   //Loop through each column in the table and create cell
   for (var i=0; i < 8; i++) {
@@ -65,20 +68,20 @@ function addTable() {
   console.log("addtable run")
   var newTable = document.createElement("table"),
       tbody = document.createElement("tbody"),
-      tableNameRow = document.createElement("tr")
+      tableNameRow = document.createElement("tr"),
       tableName = document.createElement("th")
       tableName.colSpan = 2
       tableName.innerHTML = "Table Name "
 
-      tableNameInput = document.createElement("input")
+  var tableNameInput = document.createElement("input")
       tableNameInput.type = "text"
 
-      //Construct HTML element
+      //Construct table name HTML element
       tableNameRow.appendChild(tableName)
       tableName.appendChild(tableNameInput)
       tbody.appendChild(tableNameRow)
 
-      headersRow = document.createElement("tr")
+  var headersRow = document.createElement("tr"),
       headers = ['Attribute Name', 'Key', 'Data Type', 'Data Size',
                 'Domain and Constraints', 'FK Reference', 'Data Description',
                 'Self-Explanatory?']
@@ -88,9 +91,23 @@ function addTable() {
     rowHeader.innerHTML = headers[i]
     headersRow.appendChild(rowHeader)
   }
-
+  //Add column headers to constructed tbody
   tbody.appendChild(headersRow)
-  newTable.appendChild(tbody)
+  // newTable.appendChild(tbody)
+  //Add the 'Add Row' button
+  var newRowBtn = document.createElement("button"),
+      buttonRow = document.createElement("tr"),
+      buttonCell = document.createElement("td")
+
+  newRowBtn.innerHTML = "Add Row"
+  //Construct Add Row Button, build table
+  buttonCell.appendChild(newRowBtn)
+  buttonRow.appendChild(buttonCell)
+  tbody.appendChild(buttonRow)
+  newTable.append(tbody)
+  //Add new table to the document
   document.body.appendChild(newTable)
 
+  //Event listener for 'Add Row' button on new table
+  newRowBtn.addEventListener("click", idHandler)
 }

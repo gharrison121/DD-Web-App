@@ -28,6 +28,7 @@
 /* Data Dictionary Page */
 table {
   width: 100%;
+  margin-bottom: 2em;
 }
 
 table, td, th{
