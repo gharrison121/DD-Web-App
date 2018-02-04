@@ -106,7 +106,8 @@ function addTable() {
   tbody.appendChild(buttonRow)
   newTable.append(tbody)
   //Add new table to the document
-  document.body.appendChild(newTable)
+  contentDiv = document.getElementById("content")
+  contentDiv.appendChild(newTable)
 
   //Event listener for 'Add Row' button on new table
   newRowBtn.addEventListener("click", idHandler)
