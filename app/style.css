@@ -6,6 +6,7 @@
 .layout-content {
   display: flex;
   flex: 1;
+  background-color: #F0F8FF;
 }
 
 #content {
@@ -14,8 +15,10 @@
 
 .layout-nav {
   /* 12em is the width of the columns */
+  background-color: #E0FFFF;
   flex: 0 0 12em;
   order: -1;
+  border-right: 1px solid black;
 }
 
 @media (min-width: 768px) {
@@ -42,4 +45,9 @@ th {
 
 input {
   width: 150px;
+}
+
+button {
+  margin: 1em;
+  display: block;
 }
