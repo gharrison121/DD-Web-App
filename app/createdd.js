@@ -7,10 +7,9 @@ console.log("Create DD Page")
 // addrow.addEventListener("click", addRow)
 
 //Handles which add row button has been clicked
-function idHandler() {
-  //Commented out ID user, now just uses element
-  console.log(event.srcElement)
-  addRow(event.srcElement)
+function idHandler(e) {
+  console.log(e.target)
+  addRow(e.target)
 }
 
 function addRow(id) {
