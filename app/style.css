@@ -30,24 +30,30 @@
 
 /* Data Dictionary Page */
 table {
-  width: 100%;
+  width: 100px;
   margin-bottom: 2em;
 }
 
 table, td, th{
     border: 1px solid black;
     border-collapse: collapse;
+    margin-left: 1cm;
 }
 
 th {
   text-align: left;
 }
 
-input {
-  width: 150px;
+input, select {
+  display: inline-block;
+  width: 120px;
 }
 
 button {
   margin: 1em;
   display: block;
+}
+
+#version {
+  float: right;
 }
