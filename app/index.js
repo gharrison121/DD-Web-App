@@ -26,8 +26,8 @@ function navigate() {
   // Set the "content" div innerHTML based on the fragment identifier.
   getContent(pageID, function (content) {
     contentDiv.innerHTML = content;
-	
-	//dynamically load JS file 
+
+	//dynamically load JS file
 	jsFile = document.createElement("script")
 	jsFile.type = 'application/javascript'
 	jsFile.src = pageID + ".js"

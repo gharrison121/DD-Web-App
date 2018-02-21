@@ -19,6 +19,7 @@
   flex: 0 0 12em;
   order: -1;
   border-right: 1px solid black;
+  margin-right: 1em;
 }
 
 @media (min-width: 768px) {
@@ -37,7 +38,6 @@ table {
 table, td, th{
     border: 1px solid black;
     border-collapse: collapse;
-    margin-left: 1cm;
 }
 
 th {

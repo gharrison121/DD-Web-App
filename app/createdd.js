@@ -18,6 +18,7 @@ function addRow(id) {
   // var rowBtn = document.getElementById(id)
   currentTable = id.closest("tbody")
   var newRow = document.createElement("tr")
+
   //Loop through each column in the table and create cell
   for (var i=0; i < 8; i++) {
     var cell = document.createElement("td")
@@ -37,6 +38,7 @@ function addRow(id) {
     } else if (i == 2) {
       var validInputs = ['Int', 'VARCHAR', 'More']
       var select = document.createElement("select")
+
       //Loop through the validInputs and create an option for each
       for (var j in validInputs) {
         var option = document.createElement("option")
@@ -70,10 +72,10 @@ function addTable() {
       tableNameRow = document.createElement("tr"),
       tableName = document.createElement("th")
       tableName.colSpan = 2
-      tableName.innerHTML = "Table Name "
 
   var tableNameInput = document.createElement("input")
       tableNameInput.type = "text"
+      tableNameInput.value = "Table Name"
 
       //Construct table name HTML element
       tableNameRow.appendChild(tableName)
@@ -92,7 +94,7 @@ function addTable() {
   }
   //Add column headers to constructed tbody
   tbody.appendChild(headersRow)
-  // newTable.appendChild(tbody)
+
   //Add the 'Add Row' button
   var newRowBtn = document.createElement("button"),
       buttonRow = document.createElement("tr"),
@@ -110,4 +112,11 @@ function addTable() {
 
   //Event listener for 'Add Row' button on new table
   newRowBtn.addEventListener("click", idHandler)
+
+  //Add a new row to the new table by default
+  newRowBtn.click();
+}
+
+function deleteRow() {
+  return;
 }
