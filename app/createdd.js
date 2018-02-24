@@ -1,4 +1,5 @@
 console.log("Create DD Page")
+squel = squel.useFlavour('mysql');
 
 //ID Getters
 // var addrow = document.getElementById("addrow")
@@ -17,12 +18,13 @@ function addRow(id) {
   //Commented out ID user, now just uses element
   // var rowBtn = document.getElementById(id)
   currentTable = id.closest("tbody")
-  var newRow = document.createElement("tr")
+  // var newRow = document.createElement("tr")
+  var newRow = currentTable.insertRow(currentTable.rows.length - 1)
 
   //Loop through each column in the table and create cell
   for (var i=0; i < 8; i++) {
-    var cell = document.createElement("td")
-
+    // var cell = document.createElement("td")
+    var cell = newRow.insertCell(i)
     //Columns have different input types
     if (i == 1) {
       var validInputs = ['Primary Key', 'Foreign Key', 'Candidate Key']
@@ -33,7 +35,7 @@ function addRow(id) {
         option.text = validInputs[j]
         select.appendChild(option)
         cell.append(select)
-        newRow.appendChild(cell)
+        // newRow.appendChild(cell)
       }
     } else if (i == 2) {
       var validInputs = ['Int', 'VARCHAR', 'More']
@@ -46,22 +48,22 @@ function addRow(id) {
         option.text = validInputs[j]
         select.appendChild(option)
         cell.append(select)
-        newRow.appendChild(cell)
+        // newRow.appendChild(cell)
       }
     } else if (i == 7) {
       var input = document.createElement("input")
       input.type = "checkbox"
       cell.append(input)
-      newRow.appendChild(cell)
+      // newRow.appendChild(cell)
     } else {
       var input = document.createElement("input")
       input.type = "text"
       cell.append(input)
-      newRow.appendChild(cell)
+      // newRow.appendChild(cell)
     }
   }
   //insert new row before the add row button
-  currentTable.insertBefore(newRow, currentTable.lastElementChild)
+  // currentTable.insertBefore(newRow, currentTable.lastElementChild)
 
 }
 
@@ -119,4 +121,88 @@ function addTable() {
 
 function deleteRow() {
   return;
+}
+
+/*
+Code Taken from https://hiddentao.com/squel/
+ */
+
+class CreateTableBlock extends squel.cls.Block {
+  /** The method exposed by the query builder */
+  table (name) {
+      this._name = name;
+  }
+
+  /** The method which generates the output */
+  _toParamString (options) {
+    return {
+        text:   this._name,
+        values: [],  /* values for paramterized queries */
+    };
+  }
+}
+
+class CreateFieldBlock extends squel.cls.Block {
+  constructor (options) {
+    super(options);
+    this._fields = [];
+  }
+
+  /** The method exposed by the query builder */
+  field (name, type) {
+    this._fields.push({
+      name: name, type: type
+    });
+  }
+
+  /** The method which generates the output */
+  _toParamString (options) {
+    let str = this._fields.map((f) => {
+      return `${f.name} ${f.type.toUpperCase()}`;
+    }).join(', ');
+
+    return {
+      text: `(${str})`,
+      values: [],   /* values for paramterized queries */
+    };
+  }
+}
+
+class CreateTableQuery extends squel.cls.QueryBuilder {
+  constructor (options, blocks) {
+    super(options, blocks || [
+      new squel.cls.StringBlock(options, 'CREATE TABLE'),
+      new CreateTableBlock(options),
+      new CreateFieldBlock(options),
+    ]);
+  }
+}
+
+
+/** Convenience method */
+squel.create = function(options) {
+  return new CreateTableQuery(options);
+};
+
+/*
+End of code taken from https://hiddentao.com/squel/
+*/
+
+//Test function of squel.create()
+console.log(
+  squel.create()
+      .table("customer")
+      .field("name", "varchar(20)")
+      .field("email", "varchar(20)")
+      .field("phoneno", "varchar(20)")
+      .field("sex", "char(1)")
+      .toString()
+);
+
+
+
+function generateSQL() {
+  var tables = document.getElementsByTagName('table')
+  console.log(tables)
+  //tables[1].rows[0].cells[0].firstElementChild.value
 }
