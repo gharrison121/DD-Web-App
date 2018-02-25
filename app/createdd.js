@@ -221,8 +221,6 @@ function generateSQL() {
           continue;
         }
       }
-
-      //create array of each cell to then create squel or
     }
   }
 }
