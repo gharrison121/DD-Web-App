@@ -196,6 +196,7 @@ console.log(
 
 
 function generateSQL() {
+  var SQLStrings = [];
   var tablesArray = document.getElementsByTagName('table')
   // console.log(tablesArray)
   console.log("tablesarray length is " + tablesArray.length)
@@ -208,19 +209,33 @@ function generateSQL() {
     for (var j=0; j < tablesArray[i].rows.length - 1; j++) {
       console.log("second loop")
       //Skip headers
-      if (j==1) {
+      if (j==0) {
+        var tabletoSQL; //Variable for storing the tables SQL
+        console.log (
+          tabletoSQL = squel.create()
+                      .table(tablesArray[i].rows[j].cells[0].firstElementChild.value)
+        )
+        console.log("second pass through " + tabletoSQL)
+      } else if (j==1) {
         continue;
+      } else if (j >= 2) {
+        //grab values in cells 0, 2 and 3
+        tabletoSQL.field(
+            tablesArray[i].rows[j].cells[0].firstChild.value,
+            tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text +
+            "(" + tablesArray[i].rows[j].cells[3].firstChild.value + ")")
+
+        console.log("The table is now " + tabletoSQL.toString())
       }
-      // console.log(tablesArray[i].rows[j])
-      // console.log(tablesArray[i].rows[j].cells)
-      for (var cellNo = 0; cellNo < tablesArray[i].rows[j].cells.length; cellNo++) {
-        console.log("third loop")
-        console.log(tablesArray[i].rows[j].cells[cellNo])
-        //skip self Explanatory, description
-        if (cellNo == 6 || cellNo == 7) {
-          continue;
-        }
-      }
+      // for (var cellNo = 0; cellNo < tablesArray[i].rows[j].cells.length; cellNo++) {
+      //   console.log("third loop")
+      //   // console.log(tablesArray[i].rows[j].cells[cellNo])
+      //   //skip self Explanatory, description
+      //   if (cellNo == 6 || cellNo == 7) {
+      //     continue;
+      //   }
+      //   //build SQL
+      // }
     }
   }
 }
