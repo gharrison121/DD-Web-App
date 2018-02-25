@@ -1,4 +1,5 @@
 console.log("index page")
+
 /*
   Dynamic Content Code for Single Page
 */

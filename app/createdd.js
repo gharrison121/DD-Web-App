@@ -15,15 +15,13 @@ function idHandler(e) {
 
 function addRow(id) {
   console.log("addrow function")
-  //Commented out ID user, now just uses element
-  // var rowBtn = document.getElementById(id)
   currentTable = id.closest("tbody")
-  // var newRow = document.createElement("tr")
+
+  //insert new row before the add row button
   var newRow = currentTable.insertRow(currentTable.rows.length - 1)
 
   //Loop through each column in the table and create cell
   for (var i=0; i < 8; i++) {
-    // var cell = document.createElement("td")
     var cell = newRow.insertCell(i)
     //Columns have different input types
     if (i == 1) {
@@ -35,7 +33,6 @@ function addRow(id) {
         option.text = validInputs[j]
         select.appendChild(option)
         cell.append(select)
-        // newRow.appendChild(cell)
       }
     } else if (i == 2) {
       var validInputs = ['Int', 'VARCHAR', 'More']
@@ -48,22 +45,18 @@ function addRow(id) {
         option.text = validInputs[j]
         select.appendChild(option)
         cell.append(select)
-        // newRow.appendChild(cell)
       }
     } else if (i == 7) {
       var input = document.createElement("input")
       input.type = "checkbox"
       cell.append(input)
-      // newRow.appendChild(cell)
     } else {
       var input = document.createElement("input")
       input.type = "text"
       cell.append(input)
-      // newRow.appendChild(cell)
     }
   }
-  //insert new row before the add row button
-  // currentTable.insertBefore(newRow, currentTable.lastElementChild)
+
 
 }
 
@@ -119,8 +112,9 @@ function addTable() {
   newRowBtn.click();
 }
 
-function deleteRow() {
-  return;
+function deleteRow(event) {
+  //get event source, delete row from which button was clicked
+  //.deleteRow(index of row to delete)
 }
 
 /*
@@ -202,7 +196,33 @@ console.log(
 
 
 function generateSQL() {
-  var tables = document.getElementsByTagName('table')
-  console.log(tables)
+  var tablesArray = document.getElementsByTagName('table')
+  // console.log(tablesArray)
+  console.log("tablesarray length is " + tablesArray.length)
   //tables[1].rows[0].cells[0].firstElementChild.value
+
+  //loop through tables
+  for (var i=0; i < tablesArray.length ; i++) {
+    console.log("first loop")
+    //loop through important rows with inputs
+    for (var j=0; j < tablesArray[i].rows.length - 1; j++) {
+      console.log("second loop")
+      //Skip headers
+      if (j==1) {
+        continue;
+      }
+      // console.log(tablesArray[i].rows[j])
+      // console.log(tablesArray[i].rows[j].cells)
+      for (var cellNo = 0; cellNo < tablesArray[i].rows[j].cells.length; cellNo++) {
+        console.log("third loop")
+        console.log(tablesArray[i].rows[j].cells[cellNo])
+        //skip self Explanatory, description
+        if (cellNo == 6 || cellNo == 7) {
+          continue;
+        }
+      }
+
+      //create array of each cell to then create squel or
+    }
+  }
 }
