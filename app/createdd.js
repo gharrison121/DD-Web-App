@@ -25,7 +25,7 @@ function addRow(id) {
 
     //Columns have different input types
     if (i == 1) {
-      var validInputs = ['Primary Key', 'Foreign Key', 'Candidate Key']
+      var validInputs = ['None', 'Primary Key', 'Foreign Key', 'Candidate Key']
       var select = document.createElement("select")
       for (var j in validInputs) {
         var option = document.createElement("option")
