@@ -96,14 +96,16 @@ function addTable() {
       buttonCell = document.createElement("td")
 
   newRowBtn.innerHTML = "Add Row"
+  newRowBtn.className = 'mdl-button mdl-js-button mdl-button--raised'
   //Construct Add Row Button, build table
   buttonCell.appendChild(newRowBtn)
   buttonRow.appendChild(buttonCell)
   tbody.appendChild(buttonRow)
   newTable.append(tbody)
+  newTable.className = 'mdl-data-table mdl-js-data-table'
+  componentHandler.upgradeElement(newTable)
   //Add new table to the document
-  contentDiv = document.getElementById("content")
-  contentDiv.appendChild(newTable)
+  document.getElementById("content").appendChild(newTable)
 
   //Event listener for 'Add Row' button on new table
   newRowBtn.addEventListener("click", idHandler)

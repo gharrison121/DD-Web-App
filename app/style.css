@@ -32,7 +32,7 @@
 /* Data Dictionary Page */
 table {
   width: 100px;
-  margin-bottom: 2em;
+  margin-top: 2em;
 }
 
 table, td, th{
@@ -50,7 +50,7 @@ input, select {
 }
 
 button {
-  margin: 1em;
+  margin: 2em;
   display: block;
 }
 

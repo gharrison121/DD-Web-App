@@ -3,12 +3,14 @@
 <h3 id="version">Version Number: 0.3</h3>
 <!-- stylesheet only here to test offline -->
 <link rel="stylesheet" href="style.css">
-<button id="addtable" onclick="addTable()">Add Table</button>
-<button onclick="generateSQL()">Generate SQL</button>
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+        id="addtable" onclick="addTable()">Add Table</button>
+<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+        onclick="generateSQL()">Generate SQL</button>
 <!-- Note for future self: Create entirety of HTML page before
     beginning javascript, that way it will be easier-->
 
-<table id="datadictionary">
+<table id="datadictionary" class="mdl-data-table mdl-js-data-table">
   <tbody id="ddtable1">
     <tr>
       <th colspan=2><input type=text value="Table Name"></th>
@@ -42,7 +44,8 @@
       <td><input type=text></td>
       <td><input type=text></td>
       <td><input type=checkbox></input></td>
-      <tr><td><button id="addrow1" onclick="idHandler(event)">Add Row</button></td></tr>
+      <tr><td><button class="mdl-button mdl-js-button mdl-button--raised"
+        id="addrow1" onclick="idHandler(event)">Add Row</button></td></tr>
   </tbody>
 </table>
 
