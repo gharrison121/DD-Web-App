@@ -219,13 +219,16 @@ function generateSQL() {
       } else if (j==1) {
         continue;
       } else if (j >= 2) {
-        //grab values in cells 0, 2 and 3
+
+        //grab values in cells 0, 2 and 3, really messy
         tabletoSQL.field(
             tablesArray[i].rows[j].cells[0].firstChild.value,
             tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text +
             "(" + tablesArray[i].rows[j].cells[3].firstChild.value + ")")
 
         console.log("The table is now " + tabletoSQL.toString())
+        SQLStrings.push(tabletoSQL.toString())
+
       }
       // for (var cellNo = 0; cellNo < tablesArray[i].rows[j].cells.length; cellNo++) {
       //   console.log("third loop")
