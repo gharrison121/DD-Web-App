@@ -1,84 +1,45 @@
-.layout {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-.layout-content {
-  display: flex;
-  flex: 1;
-  background-color: #F0F8FF;
-}
-
-
-
 #content {
   flex: 1;
+  margin-left: 3em;
+  margin-right: 3em;
+  margin-bottom: 3em;
 }
-
-.layout-nav {
-  /* 12em is the width of the columns */
-  background-color: #E0FFFF;
-  flex: 0 0 12em;
-  order: -1;
-  border-right: 1px solid black;
-  margin-right: 1em;
-}
-
-.layout-nav > ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 75%;
-  /* background-color: #f1f1f1; */
-}
-
-.layout-nav > ul > li a {
-  display: block;
-  text-decoration: none;
-  color: #000;
-  margin-left: 2em;
-  padding: 5%;
-}
-
-.layout-nav > ul > li a:hover {
-    background-color: #555;
-    color: white;
-}
-
-@media (min-width: 768px) {
-  .layout-content {
-    flex-direction: row;
-    flex: 1;
-  }
-
 
 /* Data Dictionary Page */
 table {
-  width: 100px;
-  margin-bottom: 2em;
+  width: 95%;
+  margin-top: 2em;
 }
+
+.mdl-data-table.mdl-js-data-table th {
+  /* background-color: blue; */
+  text-align: center;
+}
+
 
 table, td, th{
     border: 1px solid black;
     border-collapse: collapse;
 }
 
-th {
-  text-align: left;
+.mdl-data-table.mdl-js-data-table input {
+  /* background-color: yellow; */
+  float: left;
 }
 
-input, select {
+/* td > input, select {
   display: inline-block;
   width: 120px;
-}
+} */
 
 button {
-  margin: 1em;
+  margin: 2em;
   display: block;
 }
 
 #version {
   float: right;
+  /* margin-right: 3em; */
 }
 
 .button {
