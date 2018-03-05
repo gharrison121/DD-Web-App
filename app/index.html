@@ -3,27 +3,42 @@
   <head>
     <meta charset="utf-8">
     <meta name="google-signin-client_id" content="525579174446-om8c829lbfhv4jb693327k9ot03e7nli.apps.googleusercontent.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RDBMS Data Dictionary Design</title>
-<!-- Stylesheets -->
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 
   </head>
-  <body class="layout">
-    <h1>Data Dictionary Design Application</h1>
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          <!-- Title of the Header -->
+          <span class="mdl-layout-title">Data Dictionary Creator</span>
+        </div>
+      </header>
 
-    <main class="layout-content">
-      <nav class="layout-nav">
-        <ul>
-          <li><a href="#login">Log In</a></li>
-          <li><a href="#landing">Library</a></li>
-          <li><a href="#createdd">Create Data Dictionary</a></li>
-        </ul>
+    <div class="mdl-layout__drawer">
+      <span class="mdl-layout-title">Menu</span>
+      <!-- navigation Container, with links -->
+      <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="#login">Log In</a>
+        <a class="mdl-navigation__link" href="#landing">Library</a>
+        <a class="mdl-navigation__link" href="#createdd">Create Data Dictionary</a>
       </nav>
-    <!-- Dynamic Content loaded here using JavaScript -->
+    </div>
+
+
+    <main class="mdl-layout__content">
       <div id="content"></div>
     </main>
+
+    </div>
+
+    <!-- Scripts -->
     <script src="index.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script type='text/javascript' src="https://rawgit.com/hiddentao/squel/master/dist/squel.min.js"></script>
