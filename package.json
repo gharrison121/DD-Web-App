@@ -16,6 +16,7 @@
     "express": "^4.16.2",
     "mysql": "^2.15.0",
     "path": "^0.12.7",
+    "simple-google-openid": "^0.2.2",
     "squel": "^5.12.0"
   }
 }

@@ -42,5 +42,9 @@ if(!location.hash) {
   location.hash = "#login";
 }
 
+function init() {
+  console.log("init works on index")
+}
+
 navigate();
 window.addEventListener("hashchange", navigate)

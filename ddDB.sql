@@ -1,10 +1,8 @@
 CREATE DATABASE DDWEBAPP;
 USE DDWEBAPP;
 
--- user is reserved word in sql
 CREATE TABLE IF NOT EXISTS ACCOUNT (
 userID INT PRIMARY KEY AUTO_INCREMENT,
-username VARCHAR(20) NOT NULL UNIQUE,
 emailAddress VARCHAR(65) NOT NULL UNIQUE
 );
 
@@ -29,6 +27,12 @@ CREATE TABLE IF NOT EXISTS ATTRIBUTE (
 attributeName VARCHAR(40) NOT NULL,
 tableName VARCHAR(65) NOT NULL,
 dictionaryID INT NOT NULL,
+attributeKey VARCHAR(20),
+attributeType VARCHAR(25),
+attributeSize VARCHAR(10),
+attributeConstraints VARCHAR(100),
+attributeRef VARCHAR(100),
+attributeDesc VARCHAR(200),
 
 PRIMARY KEY (attributeName, tableName, dictionaryID),
 
@@ -38,4 +42,3 @@ REFERENCES DDTABLE (tableName),
 CONSTRAINT FOREIGN KEY (dictionaryID)
 REFERENCES DATADICTIONARY (dictionaryID)
 );
-

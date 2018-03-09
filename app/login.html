@@ -1,9 +1,18 @@
+<!-- <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script> -->
 <p>Login Page</p>
-<!-- stylesheet only here to test offline -->
+
 <link rel="stylesheet" href="style.css">
 <p>Before you use the Data Dictionary designer you must sign using your Google account</p>
 <p>Username <input type="text"></input>
 <p>Password <input type="password"></input>
 <p><a href="#landing" class="button">Submit</a></p>
-<div class="g-signin2" data-onsuccess="onSignIn"></div>
-<script src="login.js"></script>
+
+
+<div id="signin"></div>
+
+<p><a href="#login" onclick="signOut();">Sign out</a></p>
+
+<p>Below is the response from the server API: <button onclick="callServer()">refresh</button>
+<pre id="server-response" style="border: 1px dashed black; min-width: 10em; min-height: 1em; padding: .5em;"></pre>
+
+<!-- <script src="login.js"></script> -->
