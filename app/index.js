@@ -13,7 +13,7 @@ function getContent(pageID, callback) {
   };
 
   //This may require folder name for when views are moved into view folder
-  xhr.open("GET", pageID + ".html");
+  xhr.open("GET", pageID); //+ ".html");
   xhr.send(null);
 }
 

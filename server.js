@@ -32,6 +32,18 @@ app.get('/api/hello', (req, res) => {
   console.log('successful authenticated request by ' + req.user.emails[0].value);
 });
 
+//Look into route handling for authentication purposes
+
+app.use('/:pageID', function (req, res) {
+  //allow this page to be viewed by unlogged in users
+  if (req.params.pageID != 'login') {
+    // GoogleAuth.guardMiddleware()
+    console.log("using guardMiddleware")
+  }
+  //require a user to be logged in to view these pages - research
+  res.sendFile(__dirname + '/app/' + req.params.pageID + '.html');
+  console.log("not login html")
+})
 /*
 ---------------End of Authentication logic-----------------
 */

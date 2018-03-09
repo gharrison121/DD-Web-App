@@ -32,7 +32,6 @@ async function signOut() {
 
 async function callServer() {
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
-
   const el = document.getElementById('server-response');
   el.textContent = 'loading…';
 
