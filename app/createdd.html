@@ -22,7 +22,7 @@
       <th>Domain and Constraints</th>
       <th>FK Reference</th>
       <th>Data Description</th>
-      <th>Self-Explanatory?</th>
+      <!-- <th>Delete Row</th> -->
     </tr>
     <tr>
       <td><input type=text></td>
@@ -43,7 +43,8 @@
       <td><input type=text></td>
       <td><input type=text></td>
       <td><input type=text></td>
-      <td><input type=checkbox></input></td>
+      <td><button class="mdl-button mdl-js-button mdl-button--raised" onclick="deleteRow(event)"><i class="material-icons">&#xE15B;</i></td>
+      </tr>
       <tr><td><button class="mdl-button mdl-js-button mdl-button--raised"
         id="addrow1" onclick="idHandler(event)">Add Row</button></td></tr>
   </tbody>

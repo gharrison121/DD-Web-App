@@ -47,17 +47,19 @@ function addRow(id) {
         cell.append(select)
       }
     } else if (i == 7) {
-      var input = document.createElement("input")
-      input.type = "checkbox"
-      cell.append(input)
+      var button = document.createElement("button")
+      // button.onclick(deleteRow(this))
+      button.innerHTML = '<i class="material-icons">&#xE15B;</i>'
+      button.className = 'mdl-button mdl-js-button mdl-button--raised'
+      button.addEventListener('click', deleteRow)
+      componentHandler.upgradeElement(button)
+      cell.append(button)
     } else {
       var input = document.createElement("input")
       input.type = "text"
       cell.append(input)
     }
   }
-
-
 }
 
 function addTable() {
@@ -79,10 +81,9 @@ function addTable() {
 
   var headersRow = document.createElement("tr"),
       headers = ['Attribute Name', 'Key', 'Data Type', 'Data Size',
-                'Domain and Constraints', 'FK Reference', 'Data Description',
-                'Self-Explanatory?']
+                'Domain and Constraints', 'FK Reference', 'Data Description']
   //loop to number of cols in a table, create headers for each
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < 7; i++) {
     var rowHeader = document.createElement("th")
     rowHeader.innerHTML = headers[i]
     headersRow.appendChild(rowHeader)
@@ -114,9 +115,13 @@ function addTable() {
   newRowBtn.click();
 }
 
-function deleteRow(event) {
+function deleteRow(e) {
   //get event source, delete row from which button was clicked
-  //.deleteRow(index of row to delete)
+  //ascend parent nodes until we reach <tr> element
+  var index = e.target.parentNode.parentNode.parentNode.rowIndex
+  console.log(index)
+  var currentTable = e.target.closest("table")
+  currentTable.deleteRow(index)
 }
 
 /*
