@@ -12,7 +12,7 @@ function getContent(pageID, callback) {
     callback(xhr.responseText);
   };
 
-  //This may require folder name for when views are moved into view folder
+  // get partial page from server
   xhr.open("GET", pageID); //+ ".html");
   xhr.send(null);
 }
@@ -40,10 +40,6 @@ function navigate() {
 // Default page is index
 if(!location.hash) {
   location.hash = "#login";
-}
-
-function init() {
-  console.log("init works on index")
 }
 
 navigate();

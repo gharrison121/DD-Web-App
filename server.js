@@ -3,6 +3,7 @@ var app = express();
 var path = require('path');
 
 app.use(express.static('app'));
+// app.set('view engine', 'html')
 /* app.set('views', __dirname + '/views'); */
 /* app.use(express.static(path.join(__dirname, 'public'))); */
 
@@ -34,7 +35,7 @@ app.get('/api/hello', (req, res) => {
 
 //Look into route handling for authentication purposes
 
-app.use('/:pageID', function (req, res) {
+app.get('/:pageID', function (req, res) {
   //allow this page to be viewed by unlogged in users
   if (req.params.pageID != 'login') {
     // GoogleAuth.guardMiddleware()
@@ -70,7 +71,16 @@ function testCon() {
   });
 }
 
+//----------------Database Routing----------------------
 
+app.get('/myDictionaries/:userEmail', function(req, res) {
+  var userEmail = req.params.userEmail
+  var query = "SELECT title, versionNo FROM DATADICTIONARY WHERE userEmail = ?"
+  con.query(query, [userEmail], function(err, result, fields) {
+    if (err) throw err;
+    console.log(JSON.stringify(result))
+  })
+})
 
 app.listen(8080, printListen);
 

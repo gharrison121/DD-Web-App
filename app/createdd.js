@@ -1,12 +1,6 @@
 console.log("Create DD Page")
 squel = squel.useFlavour('mysql');
 
-//ID Getters
-// var addrow = document.getElementById("addrow")
-// var ddtable = document.getElementById("datadictionary")
-//Event Listeners
-// addrow.addEventListener("click", addRow)
-
 //Handles which add row button has been clicked
 function idHandler(e) {
   console.log(e.target)
@@ -237,15 +231,7 @@ function generateSQL() {
         SQLStrings.push(tabletoSQL.toString())
 
       }
-      // for (var cellNo = 0; cellNo < tablesArray[i].rows[j].cells.length; cellNo++) {
-      //   console.log("third loop")
-      //   // console.log(tablesArray[i].rows[j].cells[cellNo])
-      //   //skip self Explanatory, description
-      //   if (cellNo == 6 || cellNo == 7) {
-      //     continue;
-      //   }
-      //   //build SQL
-      // }
+
     }
   }
 }
