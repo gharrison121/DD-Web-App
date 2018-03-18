@@ -26,7 +26,6 @@ var GoogleAuth = require('simple-google-openid')
 app.use(GoogleAuth('525579174446-om8c829lbfhv4jb693327k9ot03e7nli.apps.googleusercontent.com'));
 
 app.use('/api', GoogleAuth.guardMiddleware());
-
 app.get('/api/hello', (req, res) => {
   res.send('Hello ' + (req.user.displayName || 'user without a name') + '!');
 
@@ -34,6 +33,7 @@ app.get('/api/hello', (req, res) => {
 });
 
 //Look into route handling for authentication purposes
+//IGNORE ABOVE, SHOULD BE REMOVED FROM LAPTOP COPY
 
 app.get('/:pageID', function (req, res) {
   //allow this page to be viewed by unlogged in users
@@ -45,6 +45,12 @@ app.get('/:pageID', function (req, res) {
   res.sendFile(__dirname + '/app/' + req.params.pageID + '.html');
   console.log("not login html")
 })
+
+//trying to discover what an fd is
+app.post('/testPost', function(req, res) {
+  console.log("an fd is: " + req)
+});
+
 /*
 ---------------End of Authentication logic-----------------
 */

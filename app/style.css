@@ -12,25 +12,28 @@ table {
 }
 
 .mdl-data-table.mdl-js-data-table th {
-  /* background-color: blue; */
   text-align: center;
 }
 
+select {
+  width: 100%;
+}
 
-table, td, th{
+li {
+  text-align: left;
+  list-style: none;
+}
+
+
+table, td, th {
     border: 1px solid black;
     border-collapse: collapse;
 }
 
 .mdl-data-table.mdl-js-data-table input {
-  /* background-color: yellow; */
   float: left;
 }
 
-/* td > input, select {
-  display: inline-block;
-  width: 120px;
-} */
 
 button {
   margin: 2em;
@@ -39,7 +42,6 @@ button {
 
 #version {
   float: right;
-  /* margin-right: 3em; */
 }
 
 .button {
@@ -52,4 +54,36 @@ button {
   border-right: 1px solid #333333;
   border-bottom: 1px solid #333333;
   border-left: 1px solid #CCCCCC;
+}
+
+
+/* test */
+.table
+{
+	display:table;
+	border-collapse:separate;
+	border-spacing:2px;
+  width: 75%;
+}
+.thead
+{
+	display:table-header-group;
+	color:white;
+	font-weight:bold;
+	background-color:grey;
+}
+.tbody
+{
+	display:table-row-group;
+}
+.tr
+{
+	display:table-row;
+  width: 50%;
+}
+.td
+{
+	display:table-cell;
+	border:1px solid black;
+	padding:1px;
 }

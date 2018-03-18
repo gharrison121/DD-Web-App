@@ -13,7 +13,7 @@ function getContent(pageID, callback) {
   };
 
   // get partial page from server
-  xhr.open("GET", pageID); //+ ".html");
+  xhr.open("GET", pageID);
   xhr.send(null);
 }
 
