@@ -5,6 +5,11 @@
   margin-bottom: 3em;
 }
 
+#loginDiv {
+  position: absolute;
+  right: 1em;
+}
+
 /* Data Dictionary Page */
 table {
   width: 95%;
