@@ -30,19 +30,32 @@ function addRow(id) {
       }
     } else if (i == 2) {
       var validInputs = ['Int', 'VARCHAR', 'More']
-      var select = document.createElement("select")
+      var select = document.createElement('select')
 
       //Loop through the validInputs and create an option for each
       for (var j in validInputs) {
-        var option = document.createElement("option")
+        var option = document.createElement('option')
         option.value = validInputs[j]
         option.text = validInputs[j]
         select.appendChild(option)
         cell.append(select)
       }
+    } else if (i == 4) {
+      // create checkboxes for constraints
+      var validConstraints = ['AUTO_INCREMENT', 'NOT NULL', 'UNIQUE']
+      var listHolder = document.createElement('ul')
+      for (var x in validConstraints) {
+        var listItem = document.createElement('li')
+        var checkbox = document.createElement('input')
+        checkbox.type = "checkbox"
+        listItem.textContent = validConstraints[x]
+        listItem.appendChild(checkbox)
+        listHolder.appendChild(listItem)
+        cell.append(listHolder)
+      }
+
     } else if (i == 7) {
       var button = document.createElement("button")
-      // button.onclick(deleteRow(this))
       button.innerHTML = '<i class="material-icons">&#xE15B;</i>'
       button.className = 'mdl-button mdl-js-button mdl-button--raised'
       button.addEventListener('click', deleteRow)
@@ -111,9 +124,7 @@ function addTable() {
 
 function deleteRow(e) {
   //get event source, delete row from which button was clicked
-  //ascend parent nodes until we reach <tr> element
-  var index = e.target.parentNode.parentNode.parentNode.rowIndex
-  console.log(index)
+  var index = e.target.closest("tr").rowIndex
   var currentTable = e.target.closest("table")
   currentTable.deleteRow(index)
 }
@@ -235,3 +246,28 @@ function generateSQL() {
     }
   }
 }
+
+//SubmitTable attempt
+window.addEventListener("load", function() {
+  console.log("load")
+  function sendData() {
+
+    var FD = new FormData(form)
+    //perhaps just build FD from looping through table...
+
+
+    var xhr = new XMLHttpRequest()
+    xhr.open("POST", "/testPost")
+    xhr.send(FD)
+  }
+
+  // Access the form element...
+var form = document.querySelector("form");
+
+// ...and take over its submit event.
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  sendData();
+});
+})
