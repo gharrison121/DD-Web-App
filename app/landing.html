@@ -1,3 +1,9 @@
-<h3>Landing page</h3>
-<p>You have not created any data dictionaries</p>
+<h3 id="userName">Landing page</h3>
+<div id="yourDictionaries"></div>
 <p><a href="#createdd" class="button">Create a Data Dictionary</a></p>
+<button class ="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="revealForm()">Create Data Dictionary</button>
+<form id="dictionaryForm">
+  <label for="dictionaryName">Enter your data dictionary title</label>
+  <input type="text" name="dictionaryName" id="dictionaryName" value="Title..."></input>
+  <button onclick="addDictionary(event)">Add Data Dictionary</button>
+</form>

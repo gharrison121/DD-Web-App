@@ -1,7 +1,11 @@
 console.log("Create DD Page")
-squel = squel.useFlavour('mysql');
+// squel = squel.useFlavour('mysql');
 
-//Handles which add row button has been clicked
+var dictionaryID = localStorage.getItem("dictionaryID") //global dictionaryID variable - for use in submitting table
+console.log("dictionaryID is: " + dictionaryID)
+
+
+//Function which handles which table's addRow button has been clicked
 function idHandler(e) {
   console.log(e.target)
   addRow(e.target)
@@ -133,141 +137,323 @@ function deleteRow(e) {
 Code Taken from https://hiddentao.com/squel/
  */
 
-class CreateTableBlock extends squel.cls.Block {
-  /** The method exposed by the query builder */
-  table (name) {
-      this._name = name;
-  }
+// class CreateTableBlock extends squel.cls.Block {
+//   /** The method exposed by the query builder */
+//   table (name) {
+//       this._name = name;
+//   }
+//
+//   /** The method which generates the output */
+//   _toParamString (options) {
+//     return {
+//         text:   this._name,
+//         values: [],  /* values for paramterized queries */
+//     };
+//   }
+// }
+//
+// class CreateFieldBlock extends squel.cls.Block {
+//   constructor (options) {
+//     super(options);
+//     this._fields = [];
+//   }
+//
+//   /** The method exposed by the query builder */
+//   field (name, type) {
+//     this._fields.push({
+//       name: name, type: type
+//     });
+//   }
+//
+//   /** The method which generates the output */
+//   _toParamString (options) {
+//     let str = this._fields.map((f) => {
+//       return `${f.name} ${f.type.toUpperCase()}`;
+//     }).join(', ');
+//
+//     return {
+//       text: `(${str})`,
+//       values: [],   /* values for paramterized queries */
+//     };
+//   }
+// }
+//
+// class CreateTableQuery extends squel.cls.QueryBuilder {
+//   constructor (options, blocks) {
+//     super(options, blocks || [
+//       new squel.cls.StringBlock(options, 'CREATE TABLE'),
+//       new CreateTableBlock(options),
+//       new CreateFieldBlock(options),
+//     ]);
+//   }
+// }
+//
+//
+// /** Convenience method */
+// squel.create = function(options) {
+//   return new CreateTableQuery(options);
+// };
+//
+// /*
+// End of code taken from https://hiddentao.com/squel/
+// */
+//
+// //Test function of squel.create()
+// console.log(
+//   squel.create()
+//       .table("customer")
+//       .field("name", "varchar(20)")
+//       .field("email", "varchar(20)")
+//       .field("phoneno", "varchar(20)")
+//       .field("sex", "char(1)")
+//       .toString()
+// );
+//
+// function generateSQL() {
+//   var SQLStrings = [];
+//   var tablesArray = document.getElementsByTagName('table')
+//   console.log("tablesarray length is " + tablesArray.length)
+//   //tables[1].rows[0].cells[0].firstElementChild.value
+//
+//   //loop through tables
+//   for (var i=0; i < tablesArray.length ; i++) {
+//     console.log("first loop")
+//     //loop through important rows with inputs
+//     for (var j=0; j < tablesArray[i].rows.length - 1; j++) {
+//       console.log("second loop")
+//       //Skip headers
+//       if (j==0) {
+//         var tabletoSQL; //Variable for storing the tables SQL
+//         console.log (
+//           tabletoSQL = squel.create()
+//                       .table(tablesArray[i].rows[j].cells[0].firstElementChild.value)
+//         )
+//         console.log("second pass through " + tabletoSQL)
+//       } else if (j==1) {
+//         continue;
+//       } else if (j >= 2) {
+//
+//         //grab values in cells 0, 2 and 3, really messy
+//         tabletoSQL.field(
+//             tablesArray[i].rows[j].cells[0].firstChild.value,
+//             tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text +
+//             "(" + tablesArray[i].rows[j].cells[3].firstChild.value + ")")
+//
+//         console.log("The table is now " + tabletoSQL.toString())
+//         SQLStrings.push(tabletoSQL.toString())
+//
+//       }
+//
+//     }
+//   }
+// }
 
-  /** The method which generates the output */
-  _toParamString (options) {
-    return {
-        text:   this._name,
-        values: [],  /* values for paramterized queries */
-    };
-  }
-}
+function submitTable() {
+  var actualData = []
+  console.log("submit table clicked")
 
-class CreateFieldBlock extends squel.cls.Block {
-  constructor (options) {
-    super(options);
-    this._fields = [];
-  }
-
-  /** The method exposed by the query builder */
-  field (name, type) {
-    this._fields.push({
-      name: name, type: type
-    });
-  }
-
-  /** The method which generates the output */
-  _toParamString (options) {
-    let str = this._fields.map((f) => {
-      return `${f.name} ${f.type.toUpperCase()}`;
-    }).join(', ');
-
-    return {
-      text: `(${str})`,
-      values: [],   /* values for paramterized queries */
-    };
-  }
-}
-
-class CreateTableQuery extends squel.cls.QueryBuilder {
-  constructor (options, blocks) {
-    super(options, blocks || [
-      new squel.cls.StringBlock(options, 'CREATE TABLE'),
-      new CreateTableBlock(options),
-      new CreateFieldBlock(options),
-    ]);
-  }
-}
-
-
-/** Convenience method */
-squel.create = function(options) {
-  return new CreateTableQuery(options);
-};
-
-/*
-End of code taken from https://hiddentao.com/squel/
-*/
-
-//Test function of squel.create()
-console.log(
-  squel.create()
-      .table("customer")
-      .field("name", "varchar(20)")
-      .field("email", "varchar(20)")
-      .field("phoneno", "varchar(20)")
-      .field("sex", "char(1)")
-      .toString()
-);
-
-
-
-function generateSQL() {
-  var SQLStrings = [];
   var tablesArray = document.getElementsByTagName('table')
-  // console.log(tablesArray)
-  console.log("tablesarray length is " + tablesArray.length)
-  //tables[1].rows[0].cells[0].firstElementChild.value
 
-  //loop through tables
+  // var testdata = [['hello', 'hello2', 'hello3']]
+
+  var newtestdata =[]
   for (var i=0; i < tablesArray.length ; i++) {
-    console.log("first loop")
+    // var table = {}
+    // table.attrName = []
+    // table.attrType = []
+    // table.attrSize = []
+    // table.attrConstraints = []
+    // table.attrRef = []
+    // table.attrDesc = []
+
+    var newTable = []
     //loop through important rows with inputs
     for (var j=0; j < tablesArray[i].rows.length - 1; j++) {
-      console.log("second loop")
-      //Skip headers
+      var newAttribute = []
+
       if (j==0) {
-        var tabletoSQL; //Variable for storing the tables SQL
-        console.log (
-          tabletoSQL = squel.create()
-                      .table(tablesArray[i].rows[j].cells[0].firstElementChild.value)
-        )
-        console.log("second pass through " + tabletoSQL)
+        // table.name = tablesArray[i].rows[j].cells[0].firstElementChild.value
+
+        //Skip headers row in table
       } else if (j==1) {
         continue;
       } else if (j >= 2) {
+        //table name
+        newAttribute.push(tablesArray[i].rows[0].cells[0].firstElementChild.value)
+        //this is a row, grab every cells value
 
-        //grab values in cells 0, 2 and 3, really messy
-        tabletoSQL.field(
-            tablesArray[i].rows[j].cells[0].firstChild.value,
-            tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text +
-            "(" + tablesArray[i].rows[j].cells[3].firstChild.value + ")")
+        //attr name
+        // table.attrName.push(tablesArray[i].rows[j].cells[0].firstChild.value)
+        newAttribute.push(tablesArray[i].rows[j].cells[0].firstChild.value)
 
-        console.log("The table is now " + tabletoSQL.toString())
-        SQLStrings.push(tabletoSQL.toString())
+
+        /*
+        ADDING DATA DICTIONARY ID HERE BECAUSE ITS REQUIRED IN THE DATABASE, GIVING DEFAULT VALUE WHICH WOULD REQUIRE CHANGING
+        */
+        newAttribute.push('1')
+
+        //key if not = to None
+
+        if (tablesArray[i].rows[j].cells[1].firstElementChild.options[tablesArray[i].rows[j].cells[1].firstElementChild.selectedIndex].text != "None") {
+          // table.attrType.push(tablesArray[i].rows[j].cells[1].firstElementChild.options[tablesArray[i].rows[j].cells[1].firstElementChild.selectedIndex].text)
+          newAttribute.push(tablesArray[i].rows[j].cells[1].firstElementChild.options[tablesArray[i].rows[j].cells[1].firstElementChild.selectedIndex].text)
+        } else {
+          // table.attrType.push("")
+          newAttribute.push("")
+        }
+
+        //data type if not = to None
+        // table.attrType.push(tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text)
+        newAttribute.push(tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text)
+
+
+        //data Size
+        // table.attrSize.push(tablesArray[i].rows[j].cells[3].firstChild.value)
+        newAttribute.push(tablesArray[i].rows[j].cells[3].firstChild.value)
+
+        //data constraints
+        var checkboxes = tablesArray[i].rows[j].cells[4].firstElementChild.querySelectorAll('input')
+        var constraints = "" //store constraints in a string
+
+        for (var x = 0; x < checkboxes.length; x++) {
+          if (checkboxes[x].checked == true) {
+
+            console.log("this has run")
+            constraints += (checkboxes[x].parentElement.textContent + " ")
+
+          }
+        }
+
+        // table.attrConstraints.push(constraints)
+        newAttribute.push(constraints)
+
+        //reference for FK
+        // table.attrRef.push(tablesArray[i].rows[j].cells[5].firstElementChild.value)
+        newAttribute.push(tablesArray[i].rows[j].cells[5].firstElementChild.value)
+
+        //description of data
+        // table.attrDesc.push(tablesArray[i].rows[j].cells[6].firstElementChild.value)
+        newAttribute.push(tablesArray[i].rows[j].cells[6].firstElementChild.value)
+
+        newTable.push(newAttribute)
 
       }
 
     }
+
+    newtestdata.push(newTable)
+    // actualData.push(table)
+    console.log("new test data next")
+    console.log(newtestdata)
+  }
+
+  const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+  const fetchOptions = {
+    credentials: 'same-origin',
+    method: 'POST',
+    body: JSON.stringify(newtestdata),
+    headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+  };
+  const response = fetch('/testPost', fetchOptions);
+  if (!response.ok) {
+    console.log(response.status)
+    return;
   }
 }
 
-//SubmitTable attempt
-window.addEventListener("load", function() {
-  console.log("load")
-  function sendData() {
+/*
+MAY NEED TO CHANGE THIS TO TABLE + ATTRIBUTES, OR RUN TWO FUNCTIONS LIKE THIS
+COULD HAVE getTables() FUNCTION WHICH CALLS getTableAttributes AFTER RUNNING
+THIS FUNCTION WOULD RUN addTable() FOR EACH TABLE
+getTables would also need to run getTableAttributes for each table it returns
+getTableAttributes could take a parameter (tableID)
+would need to change the function on window load to getTables()
 
-    var FD = new FormData(form)
-    //perhaps just build FD from looping through table...
+*/
 
+async function getTables() {
+  console.log("getTables has run")
+  const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
-    var xhr = new XMLHttpRequest()
-    xhr.open("POST", "/testPost")
-    xhr.send(FD)
+  var payload = {
+    idNumber: dictionaryID
+  }
+  const fetchOptions = {
+    credentials: 'same-origin',
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+  };
+  const response = await fetch('/dataDictionary/getTables', fetchOptions);
+  if (!response.ok) {
+    console.log(response.status)
+    return;
   }
 
-  // Access the form element...
-var form = document.querySelector("form");
+  //response contains all tables with
+  const data = await response.text();
+  //hacky approach but my brain hurts
+  if (data != "No tables found matching your dictionaryID") {
+    parsedData = JSON.parse(data)
 
-// ...and take over its submit event.
-form.addEventListener("submit", function (event) {
-  event.preventDefault();
+    for (var i=0; i < parsedData.length; i++) {
+      console.log(parsedData[i].tableName)
+      var attributes = getTableAttributes(parsedData[i].tableName)
+      console.log(attributes)
+      /*
+      -> with this: can construct a table
+      run addTable() for each table in the loop
+        -> make the table name input = tableName
+      run addRow() for each attribute in a table (maybe -1 as addTable() adds one row by default)
+        -> due to this, may need to manually loop through each new table and add the information
 
-  sendData();
-});
-})
+
+      */
+    }
+  } else {
+    console.log("no tables found")
+  }
+}
+
+async function getTableAttributes(tableName) {
+  console.log("getTableAttributes has run")
+  const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+
+  //this would need to be tableName
+  var payload = {
+    name: tableName
+  }
+  const fetchOptions = {
+    credentials: 'same-origin',
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+  };
+  const response = await fetch('/dataDictionary/getAttributes', fetchOptions);
+  if (!response.ok) {
+    console.log("response not okay?")
+    console.log(response.status)
+    return;
+  }
+
+  //response contains all attributes belonging to the tableName supplied
+  const data = await response.text();
+  console.log("result from getAttributes query: " + data)
+  return data;
+  /*
+  FROM HERE -> FOR EACH ATTRIBUTE RUN addRow() to appropriate table
+  */
+}
+
+(function () {
+  getTables()
+}());

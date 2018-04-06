@@ -61,6 +61,9 @@ button {
   border-left: 1px solid #CCCCCC;
 }
 
+#dictionaryForm {
+  margin-top: 2em;
+}
 
 /* test */
 .table

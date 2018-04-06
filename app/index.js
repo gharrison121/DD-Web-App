@@ -77,26 +77,21 @@ async function signOut() {
 
 async function callServer() {
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
-  // const el = document.getElementById('server-response');
-  // el.textContent = 'loading…';
 
   const fetchOptions = {
     credentials: 'same-origin',
     method: 'GET',
     headers: { 'Authorization': 'Bearer ' + token },
   };
-  const response = await fetch('/api/hello', fetchOptions);
+  const response = await fetch('/dataDictionary/addUser', fetchOptions);
   if (!response.ok) {
     console.log(response.status)
-    // handle the error
-    // el.textContent = "Server error:\n" + response.status;
     return;
   }
 
   // handle the response
   const data = await response.text();
-  console.log('the data is: ' + data);
-  // el.textContent = data;
+  console.log(data)
 }
 
 // react to computer sleeps, get a new token; gapi doesn't do this reliably
