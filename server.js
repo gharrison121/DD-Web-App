@@ -153,7 +153,7 @@ app.post('/dataDictionary/getTables', jsonParser, function(req, res) {
 
   con.query(query, dictionaryID, function(err, result, fields) {
     if (err) throw err;
-    console.log("result from query is: " + JSON.stringify(result))
+    console.log("result from get tables query is: " + JSON.stringify(result))
     if(result.length != 0) {
       res.send(result)
     } else {
@@ -165,13 +165,13 @@ app.post('/dataDictionary/getTables', jsonParser, function(req, res) {
 app.post('/dataDictionary/getAttributes', jsonParser, function(req, res) {
   var userEmail = req.user.emails[0].value
   console.log("attribute request from: " + userEmail)
-  dictionaryID = req.body.idNumber
-  console.log("dictionaryID: " + dictionaryID)
-  var query = "SELECT attributeName, attributeKey, attributeType, attributeSize, attributeConstraints, attributeRef, attributeDesc FROM ATTRIBUTE WHERE dictionaryID = ?"
+  tableName = req.body.name
+  console.log("tableName request: " + tableName)
+  var query = "SELECT attributeName, attributeKey, attributeType, attributeSize, attributeConstraints, attributeRef, attributeDesc FROM ATTRIBUTE WHERE tableName = ?"
 
-  con.query(query, dictionaryID, function(err, result, fields) {
+  con.query(query, tableName, function(err, result, fields) {
     if (err) throw err;
-    console.log("result from query is: " + JSON.stringify(result))
+    console.log("result from get attributes query is: " + JSON.stringify(result))
     if(result.length != 0) {
       res.send(result)
     } else {

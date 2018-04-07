@@ -124,7 +124,11 @@ function addTable() {
 
   //Add a new row to the new table by default
   newRowBtn.click();
+
+  return newRowBtn; //for use with loading
 }
+
+// console.log(addTable())
 
 function deleteRow(e) {
   //get event source, delete row from which button was clicked
@@ -365,13 +369,7 @@ function submitTable() {
 }
 
 /*
-MAY NEED TO CHANGE THIS TO TABLE + ATTRIBUTES, OR RUN TWO FUNCTIONS LIKE THIS
-COULD HAVE getTables() FUNCTION WHICH CALLS getTableAttributes AFTER RUNNING
-THIS FUNCTION WOULD RUN addTable() FOR EACH TABLE
-getTables would also need to run getTableAttributes for each table it returns
-getTableAttributes could take a parameter (tableID)
-would need to change the function on window load to getTables()
-
+NEXT UP: TRY DATA INSERTION INTO THE THING
 */
 
 async function getTables() {
@@ -396,16 +394,46 @@ async function getTables() {
     return;
   }
 
-  //response contains all tables with
+  //response contains all tables
   const data = await response.text();
   //hacky approach but my brain hurts
   if (data != "No tables found matching your dictionaryID") {
     parsedData = JSON.parse(data)
 
     for (var i=0; i < parsedData.length; i++) {
-      console.log(parsedData[i].tableName)
-      var attributes = getTableAttributes(parsedData[i].tableName)
-      console.log(attributes)
+      //there is a table on the page by default, so need one less table added
+      if (i < parsedData.length -1) {
+        //COULD GRAB FIRSTs ROW BUTTON HERE AND STORE IT
+        var firstAddRow = document.getElementById('addrow1')
+        var newRowButton = addTable() //could this return the element?
+      }
+
+      //call getTableAttributes
+      var attributes = await getTableAttributes(parsedData[i].tableName)
+
+      //hacky approach again
+      if(attributes != "No attributes found matching your dictionaryID") {
+        var parsedAttributes = JSON.parse(attributes)
+        for (var j=0; j < parsedAttributes.length; j++) {
+
+          //there is a row added by each table automatically, so need one less row added
+          if(j < parsedAttributes.length - 1) {
+
+            //if table 1 on page
+            if (i==0) {
+              //use first tables click function
+              firstAddRow.click()
+            } else {
+              //use the dynamically created one returned from addTable()
+              newRowButton.click()
+            }
+          }
+          console.log(parsedAttributes[j].attributeName)
+        }
+      } else {
+        console.log(attributes)
+      }
+
       /*
       -> with this: can construct a table
       run addTable() for each table in the loop
@@ -425,7 +453,6 @@ async function getTableAttributes(tableName) {
   console.log("getTableAttributes has run")
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
-  //this would need to be tableName
   var payload = {
     name: tableName
   }
@@ -438,17 +465,36 @@ async function getTableAttributes(tableName) {
         'Authorization': 'Bearer ' + token
       })
   };
-  const response = await fetch('/dataDictionary/getAttributes', fetchOptions);
-  if (!response.ok) {
-    console.log("response not okay?")
-    console.log(response.status)
-    return;
+  // const response = await fetch('/dataDictionary/getAttributes', fetchOptions);
+
+  try {
+    let response = await fetch('/dataDictionary/getAttributes', fetchOptions);
+    let data = await response.text();
+    return data
+  } catch(err) {
+    // catches errors both in fetch and response.json
+    alert(err);
   }
 
+  // if (!response.ok) {
+  //   console.log("response not okay?")
+  //   console.log(response.status)
+  //   return;
+  // }
+
   //response contains all attributes belonging to the tableName supplied
-  const data = await response.text();
-  console.log("result from getAttributes query: " + data)
-  return data;
+  // const data = await response.text();
+  // console.log(data)
+  //hacky approach again
+  // if (data != "No attributes found matching your dictionaryID") {
+  //   // console.log("found")
+  //   parsedData = JSON.parse(data)
+  //   return parsedData;
+  // } else {
+  //   // console.log("not found")
+  //   return;
+  // }
+
   /*
   FROM HERE -> FOR EACH ATTRIBUTE RUN addRow() to appropriate table
   */
