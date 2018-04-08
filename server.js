@@ -49,20 +49,53 @@ app.get('/:pageID', function (req, res) {
 app.post('/testPost', jsonParser, function(req, res) {
   //this can just be entered into the DB if we add ddtable name
 
+  //should be 4 queries, one to delete all from ddtable where dictionaryID = the one given
+  //another to delete all from attribute where dictionaryID = the one given
   //insert tables first... but we need dd ID
+  //then attributes
 
+  console.log("req.body length is: " + req.body.length)
 
   //this is each row from each table
-  for (var i = 0; i < req.body.length; i++) {
-    var query2 = "INSERT INTO ATTRIBUTE (attributeName, tableName, dictionaryID, attributeKey, attributeType, attributeSize, attributeConstraints, attributeRef, attributeDesc) VALUES ?"
-    console.log(req.body[i])
-    var values = req.body[i]
+  var attrValues = []
+  var tableValues = []
 
-    con.query(query2, [values], function(err, result, fields) {
-      if (err) throw err
-      console.log(JSON.stringify(result))
-    });
+  //dictionaryValue will be the same across all, so just grab from first table
+  var dictionaryValue = req.body[0][0][2]
+
+  for (var i = 0; i < req.body.length; i++) {
+    tableValues.push([req.body[i][0][1], Number(dictionaryValue)])
+    attrValues.push(req.body[i])
+
   }
+
+var query1 = "DELETE FROM ATTRIBUTE WHERE dictionaryID = ?"
+
+con.query(query1, dictionaryValue, function(err, result, fields) {
+    if (err) throw err
+    console.log(JSON.stringify(result))
+})
+
+var query2 = "DELETE FROM DDTABLE WHERE dictionaryID = ?"
+
+con.query(query2, dictionaryValue, function(err, result, fields) {
+    if (err) throw err
+    console.log(JSON.stringify(result))
+})
+
+var query3 = "INSERT INTO DDTABLE (tableName, dictionaryID) VALUES ?"
+
+con.query(query3, [tableValues], function(err, result, fields) {
+    if (err) throw err
+    console.log(JSON.stringify(result))
+})
+
+var query4 = "INSERT INTO ATTRIBUTE (attributeName, tableName, dictionaryID, attributeKey, attributeType, attributeSize, attributeConstraints, attributeRef, attributeDesc) VALUES ?"
+// console.log(values)
+  // con.query(query4, [attrValues], function(err, result, fields) {
+  //   if (err) throw err
+  //   console.log(JSON.stringify(result))
+  // });
 });
 
 function updateDictionary(req, res) {

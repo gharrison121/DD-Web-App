@@ -125,7 +125,8 @@ function addTable() {
   //Add a new row to the new table by default
   newRowBtn.click();
 
-  return newRowBtn; //for use with loading
+  return [currentTable, newRowBtn]; //for use with loading in getTables()
+
 }
 
 // console.log(addTable())
@@ -282,19 +283,22 @@ function submitTable() {
       } else if (j==1) {
         continue;
       } else if (j >= 2) {
-        //table name
-        newAttribute.push(tablesArray[i].rows[0].cells[0].firstElementChild.value)
-        //this is a row, grab every cells value
 
         //attr name
         // table.attrName.push(tablesArray[i].rows[j].cells[0].firstChild.value)
         newAttribute.push(tablesArray[i].rows[j].cells[0].firstChild.value)
 
+        //table name
+        newAttribute.push(tablesArray[i].rows[0].cells[0].firstElementChild.value)
+        //this is a row, grab every cells value
+
+
+
 
         /*
         ADDING DATA DICTIONARY ID HERE BECAUSE ITS REQUIRED IN THE DATABASE, GIVING DEFAULT VALUE WHICH WOULD REQUIRE CHANGING
         */
-        newAttribute.push('1')
+        newAttribute.push(dictionaryID)
 
         //key if not = to None
 
@@ -348,9 +352,9 @@ function submitTable() {
     newtestdata.push(newTable)
     // actualData.push(table)
     console.log("new test data next")
-    console.log(newtestdata)
-  }
 
+  }
+console.log(newtestdata)
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
   const fetchOptions = {
     credentials: 'same-origin',
@@ -373,7 +377,7 @@ NEXT UP: TRY DATA INSERTION INTO THE THING
 */
 
 async function getTables() {
-  console.log("getTables has run")
+  // console.log("getTables has run")
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
   var payload = {
@@ -401,12 +405,24 @@ async function getTables() {
     parsedData = JSON.parse(data)
 
     for (var i=0; i < parsedData.length; i++) {
+      var tableMetaData = addTable()
+      var currentTable = tableMetaData[0]
+      var newRowButton = tableMetaData[1]
+      var dataForInsert = []
+      dataForInsert.push(currentTable)
+
+
+      dataForInsert.push(parsedData[i])
+
       //there is a table on the page by default, so need one less table added
-      if (i < parsedData.length -1) {
+      // if (i < parsedData.length -1) {
         //COULD GRAB FIRSTs ROW BUTTON HERE AND STORE IT
-        var firstAddRow = document.getElementById('addrow1')
-        var newRowButton = addTable() //could this return the element?
-      }
+        // var firstAddRow = document.getElementById('addrow1')
+
+
+        // console.log("the table: ")
+        // console.log(currentTable)
+      // }
 
       //call getTableAttributes
       var attributes = await getTableAttributes(parsedData[i].tableName)
@@ -414,35 +430,20 @@ async function getTables() {
       //hacky approach again
       if(attributes != "No attributes found matching your dictionaryID") {
         var parsedAttributes = JSON.parse(attributes)
+        var tableAttributes = []
         for (var j=0; j < parsedAttributes.length; j++) {
+          tableAttributes.push(parsedAttributes[j])
+          dataForInsert.push(tableAttributes)
 
           //there is a row added by each table automatically, so need one less row added
           if(j < parsedAttributes.length - 1) {
-
-            //if table 1 on page
-            if (i==0) {
-              //use first tables click function
-              firstAddRow.click()
-            } else {
-              //use the dynamically created one returned from addTable()
-              newRowButton.click()
-            }
+            newRowButton.click()
           }
-          console.log(parsedAttributes[j].attributeName)
         }
       } else {
         console.log(attributes)
       }
-
-      /*
-      -> with this: can construct a table
-      run addTable() for each table in the loop
-        -> make the table name input = tableName
-      run addRow() for each attribute in a table (maybe -1 as addTable() adds one row by default)
-        -> due to this, may need to manually loop through each new table and add the information
-
-
-      */
+      insertData(dataForInsert)
     }
   } else {
     console.log("no tables found")
@@ -450,7 +451,7 @@ async function getTables() {
 }
 
 async function getTableAttributes(tableName) {
-  console.log("getTableAttributes has run")
+  // console.log("getTableAttributes has run")
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
   var payload = {
@@ -499,6 +500,63 @@ async function getTableAttributes(tableName) {
   FROM HERE -> FOR EACH ATTRIBUTE RUN addRow() to appropriate table
   */
 }
+
+function insertData(data) {
+  console.log("insertData has run")
+
+  var currentTable = data[0]
+  currentTable.rows[0].querySelectorAll('input')[0].value = data[1].tableName
+
+  //loop through data
+  //if there are attributes belonging to a table -- attributes sit at position 2 in array
+  if (data[2]) {
+    for (var i = 0; i < data[2].length; i++) {
+      //attribute Name
+      currentTable.rows[i+2].querySelectorAll('input')[0].value = data[2][i].attributeName
+
+      //Key Type
+      for (var j = 0; j < currentTable.rows[i+2].cells[1].querySelectorAll('option').length; j++) {
+
+        if (currentTable.rows[i+2].cells[1].querySelectorAll('option')[j].value == data[2][i].attributeKey) {
+          currentTable.rows[i+2].cells[1].firstElementChild.selectedIndex = j // fix this
+
+        }
+      }
+
+      //Data Type
+      for (var x = 0; x < currentTable.rows[i+2].cells[2].querySelectorAll('option').length; x++) {
+        if (currentTable.rows[i+2].cells[2].querySelectorAll('option')[x].value == data[2][i].attributeType) {
+          currentTable.rows[i+2].cells[2].firstElementChild.selectedIndex = x
+        }
+      }
+
+      //attribute Data Size
+      currentTable.rows[i+2].querySelectorAll('input')[1].value = data[2][i].attributeSize
+
+      //attribute Constraints
+    for (var y = 0; y < currentTable.rows[i+2].cells[4].querySelectorAll('li').length; y++) {
+        if (currentTable.rows[i+2].cells[4].querySelectorAll('li')[y].textContent == data[2][i].attributeConstraints) {
+          currentTable.rows[i+2].cells[4].querySelectorAll('li')[y].firstElementChild.checked = true
+        }
+      }
+
+
+      //attribute Ref
+      currentTable.rows[i+2].querySelectorAll('input')[5].value = data[2][i].attributeRef
+
+      //attribute Description
+      currentTable.rows[i+2].querySelectorAll('input')[6].value = data[2][i].attributeDesc
+    }
+  } else {
+    return;
+  }
+
+
+
+
+
+}
+
 
 (function () {
   getTables()
