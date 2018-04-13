@@ -61,37 +61,33 @@ button {
   border-left: 1px solid #CCCCCC;
 }
 
+.removeBtn {
+  margin-left: 3em;
+}
+.deleteTable {
+  font-size: 18pt;
+  float: right;
+}
+
+.deleteTable:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.tableNameInput {
+  margin-top: 1em;
+}
+
 #dictionaryForm {
+  display: none;
   margin-top: 2em;
 }
 
-/* test */
-.table
-{
-	display:table;
-	border-collapse:separate;
-	border-spacing:2px;
-  width: 75%;
+#responseHolder > a, a:link {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
 }
-.thead
-{
-	display:table-header-group;
-	color:white;
-	font-weight:bold;
-	background-color:grey;
-}
-.tbody
-{
-	display:table-row-group;
-}
-.tr
-{
-	display:table-row;
-  width: 50%;
-}
-.td
-{
-	display:table-cell;
-	border:1px solid black;
-	padding:1px;
+
+#landingTitle {
+  text-align: center;
 }

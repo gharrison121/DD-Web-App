@@ -9,7 +9,7 @@ var con = mysql.createConnection({ //connection options to database
   host: "localhost",
   user: "root",
   password: "root",
-  database: "DDWEBAPP"
+  database: "DDWEBAPP2"
 });
 
 app.use(GoogleAuth('525579174446-om8c829lbfhv4jb693327k9ot03e7nli.apps.googleusercontent.com'));
@@ -23,30 +23,14 @@ con.connect(function(err) {
 //not sure? https://stackoverflow.com/questions/28724936/how-to-iterate-over-an-array-of-objects-in-the-request-body
 
 
-/*
-Authentication
-
-What to do here -
-
-Ensure only clients who are signed in can view the application
-
-Below is currently test code from the package, need to test & adapt
-*/
-
 app.get('/:pageID', function (req, res) {
-  // if (req.params.pageID != 'login') {
-  //   // GoogleAuth.guardMiddleware()
-  //   console.log("using guardMiddleware")
-  // }
-
   //send requested page ID file
   res.sendFile(__dirname + '/app/' + req.params.pageID + '.html');
-  // console.log("not login html")
 })
 
 
 
-app.post('/testPost', jsonParser, function(req, res) {
+app.post('/dataDictionary/updateDictionary', jsonParser, function(req, res) {
   //this can just be entered into the DB if we add ddtable name
 
   //should be 4 queries, one to delete all from ddtable where dictionaryID = the one given
@@ -54,84 +38,50 @@ app.post('/testPost', jsonParser, function(req, res) {
   //insert tables first... but we need dd ID
   //then attributes
 
-  console.log("req.body length is: " + req.body.length)
 
-  //this is each row from each table
-  var attrValues = []
+  //each table
   var tableValues = []
+  //each row from each table
+  var attrValues = []
 
   //dictionaryValue will be the same across all, so just grab from first table
   var dictionaryValue = req.body[0][0][2]
 
   for (var i = 0; i < req.body.length; i++) {
     tableValues.push([req.body[i][0][1], Number(dictionaryValue)])
-    attrValues.push(req.body[i])
-
+    for (var j = 0; j < req.body[i].length; j++) {
+      attrValues.push(req.body[i][j])
+    }
   }
 
-var query1 = "DELETE FROM ATTRIBUTE WHERE dictionaryID = ?"
 
-con.query(query1, dictionaryValue, function(err, result, fields) {
-    if (err) throw err
-    console.log(JSON.stringify(result))
-})
+  var query1 = "DELETE FROM ATTRIBUTE WHERE dictionaryID = ?"
 
-var query2 = "DELETE FROM DDTABLE WHERE dictionaryID = ?"
+  con.query(query1, dictionaryValue, function(err, result, fields) {
+      if (err) throw err
+      console.log(JSON.stringify(result))
+  });
 
-con.query(query2, dictionaryValue, function(err, result, fields) {
-    if (err) throw err
-    console.log(JSON.stringify(result))
-})
+  var query2 = "DELETE FROM DDTABLE WHERE dictionaryID = ?"
 
-var query3 = "INSERT INTO DDTABLE (tableName, dictionaryID) VALUES ?"
+  con.query(query2, dictionaryValue, function(err, result, fields) {
+      if (err) throw err
+      console.log(JSON.stringify(result))
+  });
 
-con.query(query3, [tableValues], function(err, result, fields) {
-    if (err) throw err
-    console.log(JSON.stringify(result))
-})
+  var query3 = "INSERT INTO DDTABLE (tableName, dictionaryID) VALUES ?"
 
-var query4 = "INSERT INTO ATTRIBUTE (attributeName, tableName, dictionaryID, attributeKey, attributeType, attributeSize, attributeConstraints, attributeRef, attributeDesc) VALUES ?"
-// console.log(values)
-  // con.query(query4, [attrValues], function(err, result, fields) {
-  //   if (err) throw err
-  //   console.log(JSON.stringify(result))
-  // });
+  con.query(query3, [tableValues], function(err, result, fields) {
+      if (err) throw err
+      console.log(JSON.stringify(result))
+  });
+
+  var query4 = "INSERT INTO ATTRIBUTE (attributeName, tableName, dictionaryID, attributeKey, attributeType, attributeSize, attributeConstraints, attributeRef, attributeDesc) VALUES ?"
+    con.query(query4, [attrValues], function(err, result, fields) {
+      if (err) throw err
+      console.log(JSON.stringify(result))
+    });
 });
-
-function updateDictionary(req, res) {
-  //log who request is from
-  console.log("received post from: " + req.user.emails[0].value)
-  var data = req.body
-  console.log(req.body)
-  // console.log(req.body.length)
-  //example of accessing that data
-  // console.log("received email2?: " + data[1].email)
-
-  //we need to now add data to db
-  /*
-  this will involve a few queries
-
-  one to add to the DDTABLE table
-  loop through each attribute in table and make query for each
-
-  */
-
-
-
-  var sql = "INSERT INTO ATTRIBUTE (attributeName, tableName, dictionaryID, attributeKey, attributeType, attributeSize, attributeConstraints, attributeRef, attributeDesc) VALUES ?"
-
-  var values;
-  //works
-  // data.forEach(function (table) {
-  //   console.log(
-  //     table.name + " \n" + table.attrName
-  //
-  //
-  //   )
-  // })
-  };
-
-
 
 function testCon() {
   var query = "SELECT * FROM ACCOUNT;"
@@ -143,7 +93,6 @@ function testCon() {
 
 //----------------Database Routing----------------------
 app.get('/dataDictionary/addUser', (req, res) => {
-  res.send('Hello ' + (req.user.emails[0].value) + '!');
 
   console.log('successful authenticated request by ' + req.user.emails[0].value);
 
@@ -221,15 +170,10 @@ app.post('/dataDictionary/addDictionary', jsonParser, function(req, res) {
     title: req.body.title,
     userEmail: req.user.emails[0].value
   }
-  console.log(value)
-
   var query = "INSERT IGNORE INTO DATADICTIONARY SET ?"
 
   con.query(query, value, function(err, result, fields) {
     if (err) throw err;
-    console.log("results from dictionary sub")
-    console.log(JSON.stringify(result))
-    console.log(JSON.stringify(result.insertId))
     res.send(JSON.stringify(result.insertId))
 
   })
@@ -238,10 +182,75 @@ app.post('/dataDictionary/addDictionary', jsonParser, function(req, res) {
   //https://stackoverflow.com/questions/31371079/retrieve-last-inserted-id-with-mysql
 });
 
+app.post('/dataDictionary/removeDictionary', jsonParser, function(req, res) {
+  var query = "DELETE FROM DATADICTIONARY WHERE dictionaryID = ?"
+  var value = []
+  value.push(req.body) //dictionaryID
+
+  con.query(query, [value], function(err, result, fields) {
+    if (err) throw err;
+    console.log(JSON.stringify(result))
+  })
+});
+
 app.listen(8080, printListen);
 
 function printListen() {
   console.log("Listening at port 8080");
 }
 
-testCon();
+// app.post('/dataDictionary/generateSQL', jsonParser, function(req, res) {
+//   var value = []
+//   value.push(req.body.idNumber) //dictionaryID
+//   var tablesArray;
+//   var attributeArray
+//   var query1 = "SELECT tableName FROM DDTABLE WHERE dictionaryID = ?"
+//
+//   con.query(query1, [value], function(err, tables, fields) {
+//     if (err) throw err;
+//     // console.log(JSON.stringify(result))
+//     tablesArray = tables
+//     for (var i=0; i < tables.length; i++) {
+//       console.log(tables[i].tableName)
+//       var sqlString = "CREATE TABLE IF NOT EXISTS " + tables[i].tableName + " ("
+//
+//       var query2 = "SELECT tableName, attributeName, attributeKey, attributeType, attributeSize, attributeConstraints, attributeRef, attributeDesc FROM ATTRIBUTE WHERE tableName = ?"
+//
+//       con.query(query2, [tables[i].tableName], function(err, attributes, fields) {
+//         attributeArray = attributes
+//         if (err) throw err;
+//         console.log(i)
+//         for (var j=0; j < attributes.length; j++) {
+//
+//           // console.log(attributes[j].tableName)
+//           var attr = "\n" + attributes[j].attributeName + " " + attributes[j].attributeType
+//
+//           if (attributes[j].attributeSize != "") {
+//             attr += "(" + attributes[j].attributeSize + ")"
+//           }
+//
+//           if (attributes[j].attributeKey != "") {
+//             attr += " " + attributes[j].attributeKey
+//           }
+//
+//           if (attributes[j].attributesConstraints != "") {
+//             var constraints = attributes[j].attributeConstraints.split(",").slice(0, -1)
+//             for (var x=0; x < constraints.length; x++) {
+//               attr += " " + constraints[x]
+//             }
+//           }
+//
+//           if (j != attributes.length - 1) {
+//             attr += ","
+//           }
+//           sqlString += attr
+//
+//         }
+//         sqlString += "\n);"
+//         // console.log(sqlString)
+//       })
+//
+//     }
+//
+//   })
+// })

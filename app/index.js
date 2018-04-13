@@ -67,7 +67,6 @@ function init() {
 
 function onSignIn(googleUser) {
   const profile = googleUser.getBasicProfile();
-
   callServer();
 }
 async function signOut() {
@@ -89,9 +88,6 @@ async function callServer() {
     return;
   }
 
-  // handle the response
-  const data = await response.text();
-  console.log(data)
 }
 
 // react to computer sleeps, get a new token; gapi doesn't do this reliably

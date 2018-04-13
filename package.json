@@ -19,5 +19,8 @@
     "path": "^0.12.7",
     "simple-google-openid": "^0.2.2",
     "squel": "^5.12.0"
+  },
+  "devDependencies": {
+    "ws": "3.3.2"
   }
 }

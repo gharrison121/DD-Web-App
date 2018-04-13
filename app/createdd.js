@@ -1,11 +1,10 @@
-console.log("Create DD Page")
-// squel = squel.useFlavour('mysql');
+(function () {
+  getTables()
+}());
 
 var dictionaryID = localStorage.getItem("dictionaryID") //global dictionaryID variable - for use in submitting table
-console.log("dictionaryID is: " + dictionaryID)
 
-
-//Function which handles which table's addRow button has been clicked
+//Function to handle which table's addRow button has been clicked
 function idHandler(e) {
   console.log(e.target)
   addRow(e.target)
@@ -73,6 +72,7 @@ function addRow(id) {
   }
 }
 
+
 function addTable() {
   console.log("addtable run")
   var newTable = document.createElement("table"),
@@ -84,10 +84,20 @@ function addTable() {
   var tableNameInput = document.createElement("input")
       tableNameInput.type = "text"
       tableNameInput.value = "Table Name"
+      tableNameInput.className = "tableNameInput"
+
+  var deleteBtn = document.createElement("p")
+      deleteBtn.innerHTML = '&#10006'
+      deleteBtn.className = "deleteTable"
+      deleteBtn.addEventListener('click', deleteTable)
+
 
       //Construct table name HTML element
-      tableNameRow.appendChild(tableName)
       tableName.appendChild(tableNameInput)
+      tableName.appendChild(deleteBtn)
+      tableNameRow.appendChild(tableName)
+
+      // tableName.appendChild()
       tbody.appendChild(tableNameRow)
 
   var headersRow = document.createElement("tr"),
@@ -108,13 +118,15 @@ function addTable() {
       buttonCell = document.createElement("td")
 
   newRowBtn.innerHTML = "Add Row"
-  newRowBtn.className = 'mdl-button mdl-js-button mdl-button--raised'
-  //Construct Add Row Button, build table
+  newRowBtn.className = "mdl-button mdl-js-button mdl-button--raised"
+  //Construct Button, build table
   buttonCell.appendChild(newRowBtn)
   buttonRow.appendChild(buttonCell)
   tbody.appendChild(buttonRow)
+
+
   newTable.append(tbody)
-  newTable.className = 'mdl-data-table mdl-js-data-table'
+  newTable.className = "mdl-data-table mdl-js-data-table"
   componentHandler.upgradeElement(newTable)
   //Add new table to the document
   document.getElementById("content").appendChild(newTable)
@@ -138,120 +150,77 @@ function deleteRow(e) {
   currentTable.deleteRow(index)
 }
 
-/*
-Code Taken from https://hiddentao.com/squel/
- */
+function deleteTable(e) {
+  var currentTable = e.target.closest("table")
+  currentTable.parentNode.removeChild(currentTable)
+}
 
-// class CreateTableBlock extends squel.cls.Block {
-//   /** The method exposed by the query builder */
-//   table (name) {
-//       this._name = name;
-//   }
-//
-//   /** The method which generates the output */
-//   _toParamString (options) {
-//     return {
-//         text:   this._name,
-//         values: [],  /* values for paramterized queries */
-//     };
-//   }
-// }
-//
-// class CreateFieldBlock extends squel.cls.Block {
-//   constructor (options) {
-//     super(options);
-//     this._fields = [];
-//   }
-//
-//   /** The method exposed by the query builder */
-//   field (name, type) {
-//     this._fields.push({
-//       name: name, type: type
-//     });
-//   }
-//
-//   /** The method which generates the output */
-//   _toParamString (options) {
-//     let str = this._fields.map((f) => {
-//       return `${f.name} ${f.type.toUpperCase()}`;
-//     }).join(', ');
-//
-//     return {
-//       text: `(${str})`,
-//       values: [],   /* values for paramterized queries */
-//     };
-//   }
-// }
-//
-// class CreateTableQuery extends squel.cls.QueryBuilder {
-//   constructor (options, blocks) {
-//     super(options, blocks || [
-//       new squel.cls.StringBlock(options, 'CREATE TABLE'),
-//       new CreateTableBlock(options),
-//       new CreateFieldBlock(options),
-//     ]);
-//   }
-// }
-//
-//
-// /** Convenience method */
-// squel.create = function(options) {
-//   return new CreateTableQuery(options);
-// };
-//
-// /*
-// End of code taken from https://hiddentao.com/squel/
-// */
-//
-// //Test function of squel.create()
-// console.log(
-//   squel.create()
-//       .table("customer")
-//       .field("name", "varchar(20)")
-//       .field("email", "varchar(20)")
-//       .field("phoneno", "varchar(20)")
-//       .field("sex", "char(1)")
-//       .toString()
-// );
-//
-// function generateSQL() {
-//   var SQLStrings = [];
-//   var tablesArray = document.getElementsByTagName('table')
-//   console.log("tablesarray length is " + tablesArray.length)
-//   //tables[1].rows[0].cells[0].firstElementChild.value
-//
-//   //loop through tables
-//   for (var i=0; i < tablesArray.length ; i++) {
-//     console.log("first loop")
-//     //loop through important rows with inputs
-//     for (var j=0; j < tablesArray[i].rows.length - 1; j++) {
-//       console.log("second loop")
-//       //Skip headers
-//       if (j==0) {
-//         var tabletoSQL; //Variable for storing the tables SQL
-//         console.log (
-//           tabletoSQL = squel.create()
-//                       .table(tablesArray[i].rows[j].cells[0].firstElementChild.value)
-//         )
-//         console.log("second pass through " + tabletoSQL)
-//       } else if (j==1) {
-//         continue;
-//       } else if (j >= 2) {
-//
-//         //grab values in cells 0, 2 and 3, really messy
-//         tabletoSQL.field(
-//             tablesArray[i].rows[j].cells[0].firstChild.value,
-//             tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text +
-//             "(" + tablesArray[i].rows[j].cells[3].firstChild.value + ")")
-//
-//         console.log("The table is now " + tabletoSQL.toString())
-//         SQLStrings.push(tabletoSQL.toString())
-//
-//       }
-//
-//     }
-//   }
-// }
+function generateSQL() {
+  var SQLStrings = [];
+  var tablesArray = document.getElementsByTagName('table')
+  //tables[1].rows[0].cells[0].firstElementChild.value
+
+  //loop through tables
+  for (var i=0; i < tablesArray.length ; i++) {
+    //loop through important rows with inputs
+    for (var j=0; j < tablesArray[i].rows.length - 1; j++) {
+      //Skip headers
+      if (j==0) {
+        var tabletoSQL; //Variable for storing the tables SQL
+
+
+        tabletoSQL = "CREATE TABLE IF NOT EXISTS " + tablesArray[i].rows[j].cells[0].firstElementChild.value + " ("
+      } else if (j==1) {
+        continue;
+      } else if (j >= 2) {
+
+        //new attribute, add attribute name, data type
+        tabletoSQL += "\n" + tablesArray[i].rows[j].cells[0].firstChild.value + " " +  tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text
+
+
+        //if there is a data size present, add brackets and add that
+
+        if (tablesArray[i].rows[j].cells[3].firstElementChild.value.length != 0) {
+          tabletoSQL += "(" + tablesArray[i].rows[j].cells[3].firstElementChild.value + ")"
+        }
+
+        //if primary key add that
+        if (tablesArray[i].rows[j].cells[1].firstElementChild.options[tablesArray[i].rows[j].cells[1].firstElementChild.selectedIndex].text == "Primary Key") {
+          tabletoSQL += " PRIMARY KEY"
+        }
+
+        //data constraints
+        var checkboxes = tablesArray[i].rows[j].cells[4].firstElementChild.querySelectorAll('input')
+        for (var x = 0; x < checkboxes.length; x++) {
+          if (checkboxes[x].checked == true) {
+            tabletoSQL += (" " + checkboxes[x].parentElement.textContent)
+          }
+        }
+
+        //add comma if not last relevant row
+        if (j != tablesArray[i].rows.length - 2) {
+          tabletoSQL += ","
+        }
+        // console.log("The table is now " + tabletoSQL)
+      }
+    }
+    tabletoSQL += "\n);"
+    SQLStrings.push(tabletoSQL)
+  }
+
+  var SQLStrings = SQLStrings.join("\n")
+  var SQLStrings = new Blob([SQLStrings], {type:"text/plain"});
+  var SQLStringsURL = window.URL.createObjectURL(SQLStrings);
+  var fileName = "generatedCode"
+
+  var downloadLink = document.createElement("a");
+  downloadLink.download = fileName;
+  downloadLink.href = SQLStringsURL;
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}
 
 function submitTable() {
   var actualData = []
@@ -259,17 +228,8 @@ function submitTable() {
 
   var tablesArray = document.getElementsByTagName('table')
 
-  // var testdata = [['hello', 'hello2', 'hello3']]
-
   var newtestdata =[]
   for (var i=0; i < tablesArray.length ; i++) {
-    // var table = {}
-    // table.attrName = []
-    // table.attrType = []
-    // table.attrSize = []
-    // table.attrConstraints = []
-    // table.attrRef = []
-    // table.attrDesc = []
 
     var newTable = []
     //loop through important rows with inputs
@@ -285,7 +245,6 @@ function submitTable() {
       } else if (j >= 2) {
 
         //attr name
-        // table.attrName.push(tablesArray[i].rows[j].cells[0].firstChild.value)
         newAttribute.push(tablesArray[i].rows[j].cells[0].firstChild.value)
 
         //table name
@@ -293,30 +252,24 @@ function submitTable() {
         //this is a row, grab every cells value
 
 
-
-
         /*
-        ADDING DATA DICTIONARY ID HERE BECAUSE ITS REQUIRED IN THE DATABASE, GIVING DEFAULT VALUE WHICH WOULD REQUIRE CHANGING
+        ADDING DATA DICTIONARY ID HERE BECAUSE ITS REQUIRED IN THE DATABASE
         */
         newAttribute.push(dictionaryID)
 
         //key if not = to None
 
         if (tablesArray[i].rows[j].cells[1].firstElementChild.options[tablesArray[i].rows[j].cells[1].firstElementChild.selectedIndex].text != "None") {
-          // table.attrType.push(tablesArray[i].rows[j].cells[1].firstElementChild.options[tablesArray[i].rows[j].cells[1].firstElementChild.selectedIndex].text)
           newAttribute.push(tablesArray[i].rows[j].cells[1].firstElementChild.options[tablesArray[i].rows[j].cells[1].firstElementChild.selectedIndex].text)
         } else {
-          // table.attrType.push("")
           newAttribute.push("")
         }
 
         //data type if not = to None
-        // table.attrType.push(tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text)
         newAttribute.push(tablesArray[i].rows[j].cells[2].firstElementChild.options[tablesArray[i].rows[j].cells[2].firstElementChild.selectedIndex].text)
 
 
         //data Size
-        // table.attrSize.push(tablesArray[i].rows[j].cells[3].firstChild.value)
         newAttribute.push(tablesArray[i].rows[j].cells[3].firstChild.value)
 
         //data constraints
@@ -327,22 +280,19 @@ function submitTable() {
           if (checkboxes[x].checked == true) {
 
             console.log("this has run")
-            constraints += (checkboxes[x].parentElement.textContent + " ")
+            constraints += (checkboxes[x].parentElement.textContent + ",")
 
           }
         }
-
-        // table.attrConstraints.push(constraints)
         newAttribute.push(constraints)
 
         //reference for FK
-        // table.attrRef.push(tablesArray[i].rows[j].cells[5].firstElementChild.value)
         newAttribute.push(tablesArray[i].rows[j].cells[5].firstElementChild.value)
 
         //description of data
-        // table.attrDesc.push(tablesArray[i].rows[j].cells[6].firstElementChild.value)
         newAttribute.push(tablesArray[i].rows[j].cells[6].firstElementChild.value)
 
+        //add attribute to the table array
         newTable.push(newAttribute)
 
       }
@@ -350,11 +300,8 @@ function submitTable() {
     }
 
     newtestdata.push(newTable)
-    // actualData.push(table)
-    console.log("new test data next")
-
   }
-console.log(newtestdata)
+
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
   const fetchOptions = {
     credentials: 'same-origin',
@@ -365,19 +312,14 @@ console.log(newtestdata)
         'Authorization': 'Bearer ' + token
       })
   };
-  const response = fetch('/testPost', fetchOptions);
+  const response = fetch('/dataDictionary/updateDictionary', fetchOptions);
   if (!response.ok) {
     console.log(response.status)
     return;
   }
 }
 
-/*
-NEXT UP: TRY DATA INSERTION INTO THE THING
-*/
-
 async function getTables() {
-  // console.log("getTables has run")
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
   var payload = {
@@ -414,16 +356,6 @@ async function getTables() {
 
       dataForInsert.push(parsedData[i])
 
-      //there is a table on the page by default, so need one less table added
-      // if (i < parsedData.length -1) {
-        //COULD GRAB FIRSTs ROW BUTTON HERE AND STORE IT
-        // var firstAddRow = document.getElementById('addrow1')
-
-
-        // console.log("the table: ")
-        // console.log(currentTable)
-      // }
-
       //call getTableAttributes
       var attributes = await getTableAttributes(parsedData[i].tableName)
 
@@ -447,11 +379,11 @@ async function getTables() {
     }
   } else {
     console.log("no tables found")
+    addTable()
   }
 }
 
 async function getTableAttributes(tableName) {
-  // console.log("getTableAttributes has run")
   const token = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 
   var payload = {
@@ -466,43 +398,19 @@ async function getTableAttributes(tableName) {
         'Authorization': 'Bearer ' + token
       })
   };
-  // const response = await fetch('/dataDictionary/getAttributes', fetchOptions);
 
   try {
     let response = await fetch('/dataDictionary/getAttributes', fetchOptions);
     let data = await response.text();
     return data
   } catch(err) {
-    // catches errors both in fetch and response.json
-    alert(err);
+    //catches errors both in fetch and response
+    console.log(err);
   }
 
-  // if (!response.ok) {
-  //   console.log("response not okay?")
-  //   console.log(response.status)
-  //   return;
-  // }
-
-  //response contains all attributes belonging to the tableName supplied
-  // const data = await response.text();
-  // console.log(data)
-  //hacky approach again
-  // if (data != "No attributes found matching your dictionaryID") {
-  //   // console.log("found")
-  //   parsedData = JSON.parse(data)
-  //   return parsedData;
-  // } else {
-  //   // console.log("not found")
-  //   return;
-  // }
-
-  /*
-  FROM HERE -> FOR EACH ATTRIBUTE RUN addRow() to appropriate table
-  */
 }
 
 function insertData(data) {
-  console.log("insertData has run")
 
   var currentTable = data[0]
   currentTable.rows[0].querySelectorAll('input')[0].value = data[1].tableName
@@ -516,10 +424,8 @@ function insertData(data) {
 
       //Key Type
       for (var j = 0; j < currentTable.rows[i+2].cells[1].querySelectorAll('option').length; j++) {
-
         if (currentTable.rows[i+2].cells[1].querySelectorAll('option')[j].value == data[2][i].attributeKey) {
-          currentTable.rows[i+2].cells[1].firstElementChild.selectedIndex = j // fix this
-
+          currentTable.rows[i+2].cells[1].firstElementChild.selectedIndex = j
         }
       }
 
@@ -533,12 +439,16 @@ function insertData(data) {
       //attribute Data Size
       currentTable.rows[i+2].querySelectorAll('input')[1].value = data[2][i].attributeSize
 
-      //attribute Constraints
-    for (var y = 0; y < currentTable.rows[i+2].cells[4].querySelectorAll('li').length; y++) {
-        if (currentTable.rows[i+2].cells[4].querySelectorAll('li')[y].textContent == data[2][i].attributeConstraints) {
-          currentTable.rows[i+2].cells[4].querySelectorAll('li')[y].firstElementChild.checked = true
+      //attribute Constraints, split and slice so we're left with just the text of each
+      var constraints = data[2][i].attributeConstraints.split(",").slice(0, -1)
+      for (var y = 0; y < currentTable.rows[i+2].cells[4].querySelectorAll('li').length; y++) {
+        for (var z = 0; z < constraints.length; z++) {
+          if (currentTable.rows[i+2].cells[4].querySelectorAll('li')[y].textContent == constraints[z]) {
+            currentTable.rows[i+2].cells[4].querySelectorAll('li')[y].firstElementChild.checked = true
+          }
         }
       }
+
 
 
       //attribute Ref
@@ -550,14 +460,4 @@ function insertData(data) {
   } else {
     return;
   }
-
-
-
-
-
 }
-
-
-(function () {
-  getTables()
-}());
